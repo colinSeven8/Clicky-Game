@@ -1,0 +1,19 @@
+.navbar {
+  margin: 0;
+}
+
+#score, #guess, #top-score {
+  font-size: larger;
+}
+
+#score {
+  text-align: right;
+}
+
+#guess {
+  text-align: center;
+}
+
+#top-score {
+  text-align: left;
+}
