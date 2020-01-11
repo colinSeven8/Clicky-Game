@@ -12,12 +12,35 @@ import './App.css';
 
 class App extends Component {
 
-  state = { images };
+  // Set the initial state
+  state = {
+    images: images,
+    message: "Click an image to begin!",
+    score: 0,
+    topScore: 0
+  };
 
+  componentDidMount() {}
+
+  // An image was clicked...
   imageClick = id => {
-    const images = this.state.images.filter(image => image.id !== id);
-    console.log(images);
-    this.setState({ images });
+    console.log(id);
+    // 
+    const images = this.state.images.find(image => image.id === id);
+
+    // 
+    if (images === undefined) {
+      this.setState({
+        images: images,
+        message: "You guessed incorrectly!",
+        score: 0,
+        topScore: (this.state.score > this.state.topScore) ? this.state.score : this.state.topScore
+      });
+    } else {
+
+    }
+
+    }
   };
 
   randomizer = arr => {
@@ -28,6 +51,7 @@ class App extends Component {
       arr[j] = temp;
     }
     return arr;
+    console.log(arr)
   };
 
   imageArray = this.state.images.map((image) => {
@@ -45,7 +69,7 @@ class App extends Component {
             <h2>Click on an image to earn points, but don't click on any more than once!</h2>
           </Hero>
           <Wrapper>
-            { this.randomizer(imageArray) }
+            {this.randomizer(this.imageArray)}
           </Wrapper>
           <Footer />
         </div>
