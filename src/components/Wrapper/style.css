@@ -1,7 +1,7 @@
 .wrapper {
   background: #ECEFF1;
   height: 100%;
-  width: 65%;
+  width: 100%;
   display: flex;
   flex-flow: row wrap;
   justify-content: center;

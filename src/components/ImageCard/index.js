@@ -1,14 +1,14 @@
 import React from "react";
 import "./style.css";
 
-function Image(props) {
+function ImageCard(props) {
   return (
     <div className="card">
       <div className="img-container">
-        <img alt={ props.name } src={ props.image } onClick={ () => props.imageClick(props.name) } />
+        <img alt={ props.name } src={ props.image } onClick={ () => props.imageClick(props.id) } />
       </div>
     </div>
   );
 }
 
-export default Image;
+export default ImageCard;

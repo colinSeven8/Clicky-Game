@@ -1,9 +1,11 @@
 .navbar {
   margin: 0;
+  width: 100%;
 }
 
 #score, #guess, #top-score {
   font-size: larger;
+  color: antiquewhite;
 }
 
 #score {

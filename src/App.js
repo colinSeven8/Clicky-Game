@@ -1,11 +1,11 @@
 import React, { Component } from "react";
-import Image from "./components/Image";
+import ImageCard from "./components/ImageCard";
 import Hero from "./components/Hero";
 import Wrapper from "./components/Wrapper";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
-//import ImageList from "./components/ImageList";
 import images from "./images.json";
+import update from "immutability-helper";
 import logo from './logo.svg';
 import './App.css';
 
@@ -13,81 +13,79 @@ class App extends Component {
 
   // Set the initial state
   state = {
-    selectedImages: images,
-    unselectedImages: images,
+    images,
     message: "Click an image to begin!",
     score: 0,
     topScore: 0
   };
 
-  componentDidMount() { }
-
   // An image was clicked...
-  imageClick = id => {
-    console.log(id);
-    // Get the reduced set of already matched images
-    const filteredImages = this.state.images.filter(image => image.id === id);
+  imageClick = imagesID => {
+    let imagesArr = this.state.images;
+    console.log("Clicked");
 
-    // Check if user guess right first...
-    if (filteredImages) {
-      this.setState({
-        images: images,
-        unselectedImages: filteredImages, // Pass the remaining images
-        message: "Look at the big brain on Brad!",
-        score: this.state.score + 1,
-        topScore: this.state.score
-      })
-    } else { // Wrong....
+    for (let i = 0; i < imagesArr.length; i++) {
+      console.log("imagesID " + imagesID);
 
-      this.setState({
-        images: images,
-        unselectedImages: images,
-        message: "What did you do?",
-        score: 0,
-        topScore: (this.state.score > this.state.topScore) ? this.state.score : this.state.topScore
-      });
+      if (imagesID === imagesArr[i].id) {
+        
+        if (imagesArr[i].clicked === false) {
+          console.log("Clicked new image");
+          this.setState({
+            images: update(this.state.images, { [i]: { clicked: { $set: true } } }),
+            message: "Look at the big brain on Brad!",
+            score: this.state.score + 1
+          });
+        } else {
+          console.log("Clicked same image");
+          this.setState({
+            images,
+            message: "What did you do?",
+            score: 0,
+            topScore: (this.state.score > this.state.topScore) ? this.state.score : this.state.topScore
+          });
+        }
+      }
     }
-    this.randomizer(images);
   };
 
+  // Used to shuffle the images around
   randomizer = arr => {
-    for (let i = 0; i < arr.length - 1; i++) {
+    console.log("Randomizer");
+    for (let i = arr.length - 1; i > 0; i--) {
       const temp = arr[i];
       const j = Math.floor(Math.random() * (i + 1));
       arr[i] = arr[j];
       arr[j] = temp;
     }
     return arr;
-    console.log(arr)
   };
 
   render() {
+    
+    let imageCards = this.state.images.map(image => (
+      <ImageCard
+        key={image.id}
+        id={image.id}
+        image={image.image}
+        imageClick={this.imageClick}
+      />
+    ));
+
     return (
-      //<Router>
-      <div>
+      <Wrapper>
         <Navbar
           message={this.state.message}
           score={this.state.score}
           topScore={this.state.topScore}
         />
-        <Hero backgroundImage="https://i.imgur.com/qkdpN.jpg">
+        <Hero backgroundImage="https://img.fcbayern.com/image/fetch/f_auto,h_768,q_auto:good,w_1366/https://fcbayern.com/binaries/content/gallery/fc-bayern/homepage/saison-19-20/profis/191105_kaderbild_ohne-kovac.png/191105_kaderbild_ohne-kovac.png/fcbhippo%3Axtralargesixteentonine%3Fv%3D1573036362582">
           <h1>Clicky Game!</h1>
           <h2>Click on an image to earn points, but don't click on any more than once!</h2>
         </Hero>
-        <Wrapper>
-          {
-            this.state.images.map(image => (
-              <Image
-                image={images.image}
-                imageClick={this.imageClick}
-                score={this.score}
-              />
-            ))
-          }
-        </Wrapper>
+        { this.randomizer(imageCards) }
         <Footer />
-      </div>
-      //</Router>
+      </Wrapper>
     );
   }
 }

@@ -4,7 +4,7 @@ import "./style.css";
 function Footer() {
   return (
     <footer className="footer">
-      <span>Clicky Game</span>
+      <span>Clicky Game 2020</span>
     </footer>
   );
 }
