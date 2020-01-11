@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router } from "react-router-dom";
 import Image from "./components/Image";
 import Hero from "./components/Hero";
 import Wrapper from "./components/Wrapper";
@@ -14,37 +13,45 @@ class App extends Component {
 
   // Set the initial state
   state = {
-    images: images,
+    selectedImages: images,
+    unselectedImages: images,
     message: "Click an image to begin!",
     score: 0,
     topScore: 0
   };
 
-  componentDidMount() {}
+  componentDidMount() { }
 
   // An image was clicked...
   imageClick = id => {
     console.log(id);
-    // 
-    const images = this.state.images.find(image => image.id === id);
+    // Get the reduced set of already matched images
+    const filteredImages = this.state.images.filter(image => image.id === id);
 
-    // 
-    if (images === undefined) {
+    // Check if user guess right first...
+    if (filteredImages) {
       this.setState({
         images: images,
-        message: "You guessed incorrectly!",
+        unselectedImages: filteredImages, // Pass the remaining images
+        message: "Look at the big brain on Brad!",
+        score: this.state.score + 1,
+        topScore: this.state.score
+      })
+    } else { // Wrong....
+
+      this.setState({
+        images: images,
+        unselectedImages: images,
+        message: "What did you do?",
         score: 0,
         topScore: (this.state.score > this.state.topScore) ? this.state.score : this.state.topScore
       });
-    } else {
-
     }
-
-    }
+    this.randomizer(images);
   };
 
   randomizer = arr => {
-    for (let i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length - 1; i++) {
       const temp = arr[i];
       const j = Math.floor(Math.random() * (i + 1));
       arr[i] = arr[j];
@@ -54,26 +61,33 @@ class App extends Component {
     console.log(arr)
   };
 
-  imageArray = this.state.images.map((image) => {
-    image = { image }
-  });
-
   render() {
-
     return (
-      <Router>
-        <div>
-          <Navbar />
-          <Hero backgroundImage="https://i.imgur.com/qkdpN.jpg">
-            <h1>Clicky Game!</h1>
-            <h2>Click on an image to earn points, but don't click on any more than once!</h2>
-          </Hero>
-          <Wrapper>
-            {this.randomizer(this.imageArray)}
-          </Wrapper>
-          <Footer />
-        </div>
-      </Router>
+      //<Router>
+      <div>
+        <Navbar
+          message={this.state.message}
+          score={this.state.score}
+          topScore={this.state.topScore}
+        />
+        <Hero backgroundImage="https://i.imgur.com/qkdpN.jpg">
+          <h1>Clicky Game!</h1>
+          <h2>Click on an image to earn points, but don't click on any more than once!</h2>
+        </Hero>
+        <Wrapper>
+          {
+            this.state.images.map(image => (
+              <Image
+                image={images.image}
+                imageClick={this.imageClick}
+                score={this.score}
+              />
+            ))
+          }
+        </Wrapper>
+        <Footer />
+      </div>
+      //</Router>
     );
   }
 }
