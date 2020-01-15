@@ -23,4 +23,4 @@ Colin Reesor created this version of the Clicky Game!
 ****
 ## Scrape the Hole!
 
-Click [here](https://headholelines.herokuapp.com/) tp try it out!
+Click [here](https://colinseven8.github.io/Clicky-Game/) to try it out!
