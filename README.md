@@ -3,7 +3,7 @@ React-driven memory game.
 
 ****
 ## Clicky Game - The What and Why
-Text your memory with this genius game!
+Test your memory with this genius game!
 
 ****
 ## Tech used by Clicky Game
